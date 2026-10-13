@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOTA 2 — Все герои и гайд</title>
+<style>
+  :root{
+    --bg:#0a0d11; --bg2:#0f141a; --card:#151b23; --card2:#1b222c;
+    --line:#252e3a; --red:#c2352a; --red2:#e5503f; --gold:#d9a441;
+    --gold2:#f0c674; --green:#6cc070; --blue:#5aa9e6; --purple:#9b6bd9;
+    --text:#e6e9ee; --muted:#8a94a3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);
+    color:var(--text);line-height:1.6;overflow-x:hidden;}
+  ::selection{background:var(--red);color:#fff;}
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg2);}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--red);}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(10,13,17,.9);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);}
+  .nav-in{max-width:1300px;margin:0 auto;display:flex;align-items:center;
+    justify-content:space-between;padding:12px 24px;}
+  .logo{font-size:19px;font-weight:900;letter-spacing:4px;color:var(--text);
+    text-decoration:none;display:flex;align-items:center;gap:10px;}
+  .logo-mark{width:28px;height:28px;border-radius:6px;
+    background:linear-gradient(135deg,var(--red),var(--red2));
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:900;color:#fff;
+    box-shadow:0 0 16px rgba(194,53,42,.5);}
+  .logo span{color:var(--red2);}
+  .nav-links{display:flex;gap:4px;list-style:none;flex-wrap:wrap;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;
+    font-weight:600;padding:8px 12px;border-radius:7px;transition:all .18s;}
+  .nav-links a:hover{color:var(--text);background:var(--card);}
+  .nav-links a.active{color:var(--gold2);background:rgba(217,164,65,.1);}
+  .burger{display:none;background:none;border:none;color:var(--text);
+    font-size:22px;cursor:pointer;padding:4px 8px;}
+  @media(max-width:960px){
+    .burger{display:block;}
+    .nav-links{position:absolute;top:100%;left:0;right:0;flex-direction:column;
+      background:var(--bg2);border-bottom:1px solid var(--line);
+      padding:12px;gap:2px;display:none;}
+    .nav-links.open{display:flex;}
+    .nav-links a{width:100%;}
+  }
+
+  .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;padding:120px 24px 80px;
+    background:radial-gradient(ellipse at 50% 0%,rgba(194,53,42,.2),transparent 60%),
+      radial-gradient(ellipse at 20% 90%,rgba(155,107,217,.1),transparent 55%);}
+  .hero::before{content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(37,46,58,.35) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(37,46,58,.35) 1px,transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 70%);
+    -webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 70%);
+    pointer-events:none;}
+  .hero-c{position:relative;z-index:2;max-width:940px;text-align:center;}
+  .badge{display:inline-flex;align-items:center;gap:8px;
+    background:rgba(194,53,42,.12);border:1px solid rgba(194,53,42,.4);
+    color:var(--red2);padding:6px 16px;border-radius:100px;font-size:12px;
+    font-weight:700;letter-spacing:2px;margin-bottom:22px;}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--red2);
+    animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .hero h1{font-size:clamp(34px,6.5vw,74px);font-weight:900;line-height:1.05;
+    letter-spacing:-1px;margin-bottom:20px;}
+  .hero h1 .g{background:linear-gradient(135deg,var(--red2),var(--gold2));
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;}
+  .hero p{font-size:clamp(15px,2vw,18px);color:var(--muted);
+    max-width:680px;margin:0 auto 32px;}
+  .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;
+    border-radius:10px;font-size:14px;font-weight:800;letter-spacing:.8px;
+    text-decoration:none;cursor:pointer;border:none;transition:all .2s;
+    font-family:inherit;}
+  .btn-p{background:linear-gradient(135deg,var(--red),var(--red2));
+    color:#fff;box-shadow:0 6px 24px rgba(194,53,42,.4);}
+  .btn-p:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(194,53,42,.55);}
+  .btn-g{background:var(--card);color:var(--text);border:1px solid var(--line);}
+  .btn-g:hover{background:var(--card2);border-color:var(--red);transform:translateY(-3px);}
+
+  .hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:14px;margin-top:54px;max-width:800px;margin-left:auto;margin-right:auto;}
+  .hs{background:rgba(21,27,35,.7);border:1px solid var(--line);
+    border-radius:12px;padding:16px 12px;backdrop-filter:blur(6px);}
+  .hs .n{font-size:26px;font-weight:900;line-height:1;
+    background:linear-gradient(135deg,var(--gold2),var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .hs .l{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:1px;font-weight:600;}
+
+  section{padding:90px 24px;position:relative;}
+  .cont{max-width:1300px;margin:0 auto;}
+  .sh{text-align:center;margin-bottom:48px;}
+  .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:3px;
+    color:var(--red2);margin-bottom:10px;}
+  .sh h2{font-size:clamp(26px,4.2vw,42px);font-weight:900;letter-spacing:-.5px;
+    line-height:1.15;margin-bottom:12px;}
+  .sh p{color:var(--muted);font-size:16px;max-width:660px;margin:0 auto;}
+
+  .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;}
+  .ctrl{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;display:flex;gap:14px;align-items:flex-start;
+    transition:all .22s;}
+  .ctrl:hover{border-color:var(--red);background:var(--card2);transform:translateY(-4px);}
+  .key{min-width:56px;height:44px;border-radius:9px;background:var(--card2);
+    border:1px solid var(--line);display:flex;align-items:center;
+    justify-content:center;font-size:13px;font-weight:900;color:var(--gold2);
+    letter-spacing:1px;flex-shrink:0;box-shadow:0 3px 0 rgba(0,0,0,.4);}
+  .ctrl h4{font-size:15px;font-weight:800;margin-bottom:3px;}
+  .ctrl p{font-size:13px;color:var(--muted);}
+
+  .mech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:18px;}
+  .mech{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:26px;position:relative;overflow:hidden;transition:all .25s;}
+  .mech::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--red),var(--gold));
+    transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+  .mech:hover{transform:translateY(-6px);border-color:var(--red);background:var(--card2);}
+  .mech:hover::after{transform:scaleX(1);}
+  .mech .ic{width:50px;height:50px;border-radius:12px;
+    background:rgba(194,53,42,.12);border:1px solid rgba(194,53,42,.3);
+    display:flex;align-items:center;justify-content:center;font-size:23px;
+    margin-bottom:16px;}
+  .mech h3{font-size:18px;font-weight:800;margin-bottom:8px;}
+  .mech p{color:var(--muted);font-size:14px;}
+
+  .heroes-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+    margin-bottom:22px;}
+  .tab{padding:9px 20px;border-radius:100px;background:var(--card);
+    border:1px solid var(--line);color:var(--muted);font-size:13px;
+    font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+  .tab:hover{color:var(--text);border-color:var(--gold);}
+  .tab.on{background:rgba(217,164,65,.15);color:var(--gold2);border-color:var(--gold2);}
+
+  .hero-search{max-width:440px;margin:0 auto 26px;position:relative;}
+  .hero-search input{width:100%;padding:12px 18px 12px 44px;
+    background:var(--card);border:1px solid var(--line);
+    border-radius:11px;color:var(--text);font-size:14px;
+    font-family:inherit;outline:none;transition:border-color .2s;}
+  .hero-search input:focus{border-color:var(--red2);}
+  .hero-search::before{content:'🔍';position:absolute;left:16px;top:50%;
+    transform:translateY(-50%);font-size:15px;opacity:.6;}
+
+  .heroes-grid{display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+    gap:12px;}
+  .hero-tile{position:relative;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;cursor:pointer;
+    transition:all .22s;}
+  .hero-tile.hide{display:none;}
+  .hero-tile:hover{transform:translateY(-6px) scale(1.03);
+    border-color:var(--gold2);
+    box-shadow:0 12px 32px rgba(0,0,0,.6),0 0 0 1px rgba(217,164,65,.4);
+    z-index:5;}
+  .tile-img{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,var(--card2),var(--card));
+    display:flex;align-items:center;justify-content:center;}
+  .hero-tile[data-attr="str"] .tile-img{background:linear-gradient(160deg,rgba(229,80,63,.28),rgba(20,26,34,.9));}
+  .hero-tile[data-attr="agi"] .tile-img{background:linear-gradient(160deg,rgba(108,192,112,.28),rgba(20,26,34,.9));}
+  .hero-tile[data-attr="int"] .tile-img{background:linear-gradient(160deg,rgba(90,169,230,.28),rgba(20,26,34,.9));}
+  .hero-tile[data-attr="uni"] .tile-img{background:linear-gradient(160deg,rgba(155,107,217,.28),rgba(20,26,34,.9));}
+  .tile-img img{width:100%;height:100%;object-fit:cover;position:relative;z-index:2;
+    transition:transform .35s;display:block;}
+  .hero-tile:hover .tile-img img{transform:scale(1.08);}
+  .tile-emo{position:absolute;inset:0;display:flex;align-items:center;
+    justify-content:center;font-size:44px;z-index:1;opacity:.5;}
+  .tile-attr{position:absolute;top:6px;right:6px;z-index:3;
+    font-size:9px;font-weight:900;letter-spacing:1px;
+    padding:3px 7px;border-radius:100px;
+    background:rgba(0,0,0,.65);backdrop-filter:blur(4px);
+    border:1px solid rgba(255,255,255,.18);}
+  .hero-tile[data-attr="str"] .tile-attr{color:var(--red2);}
+  .hero-tile[data-attr="agi"] .tile-attr{color:var(--green);}
+  .hero-tile[data-attr="int"] .tile-attr{color:var(--blue);}
+  .hero-tile[data-attr="uni"] .tile-attr{color:var(--purple);}
+  .tile-info{padding:8px 10px 10px;text-align:center;
+    background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.85));
+    position:absolute;left:0;right:0;bottom:0;z-index:3;
+    transform:translateY(28px);transition:transform .3s;}
+  .hero-tile:hover .tile-info{transform:translateY(0);}
+  .tile-name{font-size:12px;font-weight:900;letter-spacing:.3px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    color:#fff;text-shadow:0 1px 3px #000;}
+  .tile-en{font-size:9.5px;color:var(--muted);letter-spacing:.4px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin-top:1px;}
+
+  .lvl-selector{background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:20px 24px;margin-bottom:22px;
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;
+    justify-content:space-between;}
+  .lvl-selector label{font-size:14px;font-weight:800;color:var(--gold2);
+    letter-spacing:1px;display:flex;align-items:center;gap:10px;
+    flex-wrap:wrap;}
+  .lvl-selector select{background:var(--card2);color:var(--text);
+    border:1px solid var(--line);border-radius:9px;
+    padding:10px 14px;font-family:inherit;font-size:14px;
+    font-weight:700;cursor:pointer;outline:none;
+    min-width:240px;max-width:100%;transition:border-color .2s;}
+  .lvl-selector select:focus{border-color:var(--red2);}
+
+  .lvl-preview{display:flex;align-items:center;gap:14px;}
+  .lvl-preview .pav{width:60px;height:60px;border-radius:12px;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    font-size:32px;background:var(--card2);border:1px solid var(--line);
+    position:relative;flex-shrink:0;}
+  .lvl-preview .pav img{width:100%;height:100%;object-fit:cover;display:block;
+    position:absolute;inset:0;z-index:2;}
+  .lvl-preview[data-attr="str"] .pav{background:rgba(229,80,63,.18);border-color:rgba(229,80,63,.5);}
+  .lvl-preview[data-attr="agi"] .pav{background:rgba(108,192,112,.18);border-color:rgba(108,192,112,.5);}
+  .lvl-preview[data-attr="int"] .pav{background:rgba(90,169,230,.18);border-color:rgba(90,169,230,.5);}
+  .lvl-preview[data-attr="uni"] .pav{background:rgba(155,107,217,.18);border-color:rgba(155,107,217,.5);}
+  .lvl-preview .pinfo{display:flex;flex-direction:column;gap:2px;}
+  .lvl-preview .pn{font-size:17px;font-weight:900;letter-spacing:.3px;}
+  .lvl-preview .pr{font-size:11.5px;color:var(--muted);}
+
+  .level-wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:26px;align-items:start;}
+  @media(max-width:900px){.level-wrap{grid-template-columns:1fr;}}
+  .level-visual,.level-tips{background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:24px;}
+  .level-visual h3,.level-tips h3{font-size:17px;font-weight:800;margin-bottom:16px;
+    display:flex;align-items:center;gap:8px;}
+  .lvl-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;
+    opacity:0;transform:translateX(-8px);
+    animation:lvlIn .3s forwards;}
+  @keyframes lvlIn{to{opacity:1;transform:translateX(0);}}
+  .lvl-num{width:38px;height:38px;border-radius:50%;flex-shrink:0;
+    background:var(--card2);border:1px solid var(--line);display:flex;
+    align-items:center;justify-content:center;font-size:12px;font-weight:900;
+    color:var(--gold2);}
+  .lvl-num.ult{background:rgba(229,80,63,.18);border-color:var(--red2);color:var(--red2);}
+  .lvl-num.talent{background:rgba(217,164,65,.18);border-color:var(--gold2);color:var(--gold2);}
+  .lvl-num.stat{background:rgba(140,148,163,.15);border-color:var(--muted);color:var(--muted);font-size:11px;}
+  .lvl-bar{flex:1;height:34px;border-radius:8px;background:var(--card2);
+    border:1px solid var(--line);display:flex;align-items:center;
+    padding:0 12px;font-size:12.5px;font-weight:600;gap:9px;min-width:0;}
+  .lvl-bar > span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .lvl-bar .kb{min-width:22px;height:22px;border-radius:5px;
+    background:rgba(217,164,65,.18);border:1px solid rgba(217,164,65,.4);
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:900;color:var(--gold2);
+    letter-spacing:.5px;padding:0 5px;flex-shrink:0;}
+  .lvl-bar.hl{border-color:var(--red2);background:rgba(229,80,63,.08);}
+  .lvl-bar.hl .kb{background:rgba(229,80,63,.2);border-color:var(--red2);color:var(--red2);}
+  .lvl-bar.tl{border-color:var(--gold2);background:rgba(217,164,65,.06);}
+
+  .tip{display:flex;gap:12px;margin-bottom:12px;padding-bottom:12px;
+    border-bottom:1px solid var(--line);}
+  .tip:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .tip-num{width:26px;height:26px;border-radius:7px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--red),var(--red2));
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:900;color:#fff;}
+  .tip h5{font-size:13.5px;font-weight:800;margin-bottom:3px;color:var(--gold2);}
+  .tip p{font-size:12.5px;color:var(--muted);}
+
+  /* ====== ITEMS BUILDER ====== */
+  .build-hero{
+    background:linear-gradient(135deg,rgba(194,53,42,.1),rgba(217,164,65,.05));
+    border:1px solid rgba(217,164,65,.3);
+    border-radius:18px;padding:24px 28px;margin-bottom:26px;
+    display:flex;flex-wrap:wrap;gap:20px;align-items:center;
+    justify-content:space-between;
+  }
+  .build-hero .bh-left{display:flex;align-items:center;gap:16px;}
+  .bh-av{
+    width:76px;height:76px;border-radius:14px;overflow:hidden;
+    background:var(--card2);border:2px solid var(--line);
+    position:relative;display:flex;align-items:center;justify-content:center;
+    font-size:38px;flex-shrink:0;transition:border-color .3s;
+  }
+  .bh-av img{width:100%;height:100%;object-fit:cover;position:absolute;
+    inset:0;z-index:2;}
+  .build-hero[data-attr="str"] .bh-av{border-color:var(--red2);box-shadow:0 0 24px rgba(229,80,63,.4);}
+  .build-hero[data-attr="agi"] .bh-av{border-color:var(--green);box-shadow:0 0 24px rgba(108,192,112,.4);}
+  .build-hero[data-attr="int"] .bh-av{border-color:var(--blue);box-shadow:0 0 24px rgba(90,169,230,.4);}
+  .build-hero[data-attr="uni"] .bh-av{border-color:var(--purple);box-shadow:0 0 24px rgba(155,107,217,.4);}
+  .bh-meta .bh-name{font-size:22px;font-weight:900;letter-spacing:.3px;}
+  .bh-meta .bh-role{font-size:13px;color:var(--gold2);font-weight:700;
+    letter-spacing:.5px;margin-top:4px;}
+  .bh-meta .bh-attr{font-size:11.5px;color:var(--muted);margin-top:3px;
+    letter-spacing:1.5px;font-weight:700;}
+  .bh-select-wrap{display:flex;flex-direction:column;gap:6px;
+    min-width:260px;}
+  .bh-select-wrap label{font-size:11px;font-weight:800;color:var(--muted);
+    letter-spacing:2px;}
+  .bh-select-wrap select{
+    background:var(--card2);color:var(--text);
+    border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;font-family:inherit;font-size:14px;
+    font-weight:700;cursor:pointer;outline:none;
+    transition:border-color .2s;width:100%;
+  }
+  .bh-select-wrap select:focus{border-color:var(--red2);}
+
+  .build-steps{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:16px;margin-bottom:22px;
+  }
+  .bstep{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:20px;position:relative;overflow:hidden;
+    transition:all .25s;
+  }
+  .bstep:hover{transform:translateY(-4px);border-color:var(--gold);}
+  .bstep::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:var(--bs-color,var(--red));
+  }
+  .bstep[data-c="start"]{--bs-color:#8a94a3;}
+  .bstep[data-c="early"]{--bs-color:#6cc070;}
+  .bstep[data-c="core"]{--bs-color:#5aa9e6;}
+  .bstep[data-c="late"]{--bs-color:#d9a441;}
+  .bstep[data-c="sit"]{--bs-color:#9b6bd9;}
+  .bstep-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .bstep-ico{
+    width:38px;height:38px;border-radius:10px;
+    background:rgba(255,255,255,.06);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;flex-shrink:0;
+  }
+  .bstep-title{font-size:15px;font-weight:900;letter-spacing:.3px;}
+  .bstep-sub{font-size:11px;color:var(--muted);letter-spacing:1px;
+    font-weight:700;margin-top:2px;}
+  .bstep-list{display:flex;flex-direction:column;gap:7px;}
+  .bstep-item{
+    display:flex;align-items:center;gap:10px;
+    background:var(--card2);padding:7px 10px;border-radius:9px;
+    font-size:12.5px;color:var(--text);font-weight:600;
+    transition:all .2s;overflow:hidden;
+  }
+  .bstep-item:hover{background:rgba(217,164,65,.1);
+    transform:translateX(3px);}
+  .bstep-item img{
+    width:30px;height:30px;border-radius:6px;flex-shrink:0;
+    background:rgba(0,0,0,.4);object-fit:contain;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .bstep-item .it-name{
+    flex:1;min-width:0;overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap;
+  }
+
+  .build-note{
+    background:rgba(217,164,65,.08);
+    border:1px solid rgba(217,164,65,.25);
+    border-radius:12px;padding:14px 18px;
+    font-size:13px;color:var(--text);
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .build-note b{color:var(--gold2);}
+  .build-note .ni{font-size:18px;flex-shrink:0;}
+
+  .faq{max-width:840px;margin:0 auto;}
+  .faq-item{background:var(--card);border:1px solid var(--line);
+    border-radius:12px;margin-bottom:10px;overflow:hidden;
+    transition:border-color .22s;}
+  .faq-item:hover{border-color:var(--gold);}
+  .faq-q{padding:16px 20px;cursor:pointer;display:flex;
+    justify-content:space-between;align-items:center;font-size:14.5px;
+    font-weight:700;gap:14px;transition:background .2s;}
+  .faq-q:hover{background:var(--card2);}
+  .faq-arrow{color:var(--gold2);font-size:20px;font-weight:900;
+    transition:transform .3s;flex-shrink:0;}
+  .faq-item.open .faq-arrow{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s,padding .3s;
+    padding:0 20px;color:var(--muted);font-size:13.5px;}
+  .faq-item.open .faq-a{max-height:600px;padding:0 20px 18px;}
+
+  footer{background:var(--bg2);border-top:1px solid var(--line);
+    padding:44px 24px 28px;text-align:center;}
+  footer .fl{font-size:19px;font-weight:900;letter-spacing:4px;margin-bottom:10px;}
+  footer .fl span{color:var(--red2);}
+  footer p{color:var(--muted);font-size:13px;max-width:600px;margin:0 auto 6px;}
+  footer .disc{font-size:11.5px;color:#555e6b;margin-top:18px;
+    border-top:1px solid var(--line);padding-top:18px;}
+
+  #top{position:fixed;right:22px;bottom:22px;z-index:50;width:46px;height:46px;
+    border-radius:12px;background:var(--red);color:#fff;border:none;
+    cursor:pointer;font-size:19px;box-shadow:0 8px 24px rgba(194,53,42,.4);
+    opacity:0;pointer-events:none;transition:all .3s;}
+  #top.on{opacity:1;pointer-events:auto;}
+  #top:hover{transform:translateY(-4px);background:var(--red2);}
+
+  .reveal{opacity:0;transform:translateY(26px);
+    transition:opacity .7s,transform .7s;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<button id="top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<nav>
+  <div class="nav-in">
+    <a href="#hero" class="logo"><span class="logo-mark">D</span>DOTA<span>2</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#controls">Управление</a></li>
+      <li><a href="#mechanics">Механики</a></li>
+      <li><a href="#heroes">Все герои</a></li>
+      <li><a href="#leveling">Прокачка</a></li>
+      <li><a href="#items">Что покупать</a></li>
+      <li><a href="#faq">Вопросы</a></li>
+    </ul>
+    <button class="burger" id="burger">☰</button>
+  </div>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="hero-c">
+    <div class="badge"><span class="dot"></span> ПОЛНЫЙ ГАЙД ДЛЯ НОВИЧКА</div>
+    <h1>Как играть в <span class="g">Dota 2</span>:<br>все герои, механики и сборки</h1>
+    <p>Разберись с управлением, механиками, всеми героями и предметами. Всё в одном месте — с картинками прямо из игры.</p>
+    <div class="hero-btns">
+      <a href="#heroes" class="btn btn-p">▶ Все герои</a>
+      <a href="#items" class="btn btn-g">Сборки предметов</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><div class="n" data-count="125">0</div><div class="l">ГЕРОЕВ</div></div>
+      <div class="hs"><div class="n" data-count="4">0</div><div class="l">АТРИБУТА</div></div>
+      <div class="hs"><div class="n" data-count="3">0</div><div class="l">ЛИНИИ</div></div>
+      <div class="hs"><div class="n" data-count="100">0</div><div class="l">ПРЕДМЕТОВ</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="controls">
+  <div class="cont">
+    <div class="sh reveal">
+      <div class="tag">ШАГ 1</div>
+      <h2>Управление и интерфейс</h2>
+      <p>Сначала научись управлять героем и понимать, что происходит на экране.</p>
+    </div>
+    <div class="controls reveal">
+      <div class="ctrl"><div class="key">ПКМ</div><div><h4>Движение и атака</h4><p>Правый клик по земле — идти, по врагу — атаковать.</p></div></div>
+      <div class="ctrl"><div class="key">ЛКМ</div><div><h4>Выбор цели</h4><p>Левый клик выделяет юнита или героя, показывает его информацию.</p></div></div>
+      <div class="ctrl"><div class="key">A+ЛКМ</div><div><h4>Attack Move</h4><p>Атаковать ближайшего врага при движении — полезно в бою.</p></div></div>
+      <div class="ctrl"><div class="key">Q W E R</div><div><h4>Умения героя</h4><p>Q, W, E — обычные, R — ультимейт (доступен с 6 уровня).</p></div></div>
+      <div class="ctrl"><div class="key">S</div><div><h4>Стоп</h4><p>Мгновенно останавливает героя. Помогает при last hit.</p></div></div>
+      <div class="ctrl"><div class="key">H</div><div><h4>Hold Position</h4><p>Стоять на месте и атаковать всех, кто подойдёт.</p></div></div>
+      <div class="ctrl"><div class="key">M</div><div><h4>Move</h4><p>Идти в точку, не атакуя никого по пути.</p></div></div>
+      <div class="ctrl"><div class="key">Space</div><div><h4>Атака по цели</h4><p>Атаковать последнюю выбранную цель без промахов.</p></div></div>
+      <div class="ctrl"><div class="key">B</div><div><h4>Возврат в базу</h4><p>Быстрый телепорт к фонтану (если не в бою).</p></div></div>
+      <div class="ctrl"><div class="key">Tab</div><div><h4>Смена юнита</h4><p>Переключение между своими крипами или иллюзиями.</p></div></div>
+      <div class="ctrl"><div class="key">Alt</div><div><h4>Показ HP</h4><p>Показывает полоски здоровья у всех юнитов.</p></div></div>
+      <div class="ctrl"><div class="key">1-6</div><div><h4>Контроль-группы</h4><p>Назначь себе отряды и юниты под цифры.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="mechanics" style="background:var(--bg2);">
+  <div class="cont">
+    <div class="sh reveal">
+      <div class="tag">ШАГ 2</div>
+      <h2>Базовые механики</h2>
+      <p>Без понимания этих вещей ты будешь проигрывать линии и весь матч.</p>
+    </div>
+    <div class="mech-grid">
+      <div class="mech reveal"><div class="ic">⚔️</div><h3>Last Hit</h3><p>Добивание крипа последним ударом. Даёт золото. Основа экономики — без фарма нет предметов.</p></div>
+      <div class="mech reveal"><div class="ic">🚫</div><h3>Deny</h3><p>Убийство своего крипа, чтобы враг не получил золото и опыт. Помогает контролировать линию.</p></div>
+      <div class="mech reveal"><div class="ic">📈</div><h3>Опыт и уровни</h3><p>Опыт приходит от убитых крипов и героев. Каждый уровень повышает характеристики и даёт очко умения.</p></div>
+      <div class="mech reveal"><div class="ic">🎯</div><h3>Harass</h3><p>Нанесение урона врагу на линии, чтобы он не мог безопасно фармить.</p></div>
+      <div class="mech reveal"><div class="ic">🌲</div><h3>Пул и стак</h3><p>Пул — уводишь своих крипов к нейтралам. Стак — накапливаешь нейтралов для выгодного фарма.</p></div>
+      <div class="mech reveal"><div class="ic">🔄</div><h3>TP и ротации</h3><p>Телепорт на линию, помощь союзникам, реакция на ганки. Одна удачная ротация может перевернуть игру.</p></div>
+      <div class="mech reveal"><div class="ic">👁️</div><h3>Вардинг</h3><p>Расстановка обзорных вардов. Информация о враге — половина победы.</p></div>
+      <div class="mech reveal"><div class="ic">🐉</div><h3>Рошан</h3><p>Сильный нейтральный босс. Даёт Аегиду (воскрешение) и золото. Контроль Рошана — преимущество.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="heroes">
+  <div class="cont">
+    <div class="sh reveal">
+      <div class="tag">ШАГ 3</div>
+      <h2>Все герои Dota 2</h2>
+      <p>125 героев с картинками из игры. Нажми на любого — увидишь его билд и порядок прокачки.</p>
+    </div>
+
+    <div class="heroes-tabs reveal" id="heroTabs">
+      <button class="tab on" data-f="all">Все</button>
+      <button class="tab" data-f="str">💪 Сила</button>
+      <button class="tab" data-f="agi">🏹 Ловкость</button>
+      <button class="tab" data-f="int">🔮 Интеллект</button>
+      <button class="tab" data-f="uni">🌀 Универсал</button>
+    </div>
+
+    <div class="hero-search reveal">
+      <input type="text" id="heroSearch" placeholder="Поиск героя по имени…">
+    </div>
+
+    <div class="heroes-grid reveal" id="heroesGrid"></div>
+  </div>
+</section>
+
+<section id="leveling" style="background:var(--bg2);">
+  <div class="cont">
+    <div class="sh reveal">
+      <div class="tag">ШАГ 4</div>
+      <h2>Что качать: порядок прокачки</h2>
+      <p>Выбери героя — и увидишь его точный порядок прокачки по уровням.</p>
+    </div>
+
+    <div class="lvl-selector reveal">
+      <label>🎮 Выбери героя:
+        <select id="heroSelect"></select>
+      </label>
+      <div class="lvl-preview" id="lvlPreview">
+        <div class="pav" id="lvlAvatar">
+          <span id="lvlEmo" style="font-size:32px;">🏹</span>
+          <img id="lvlImg" src="" alt="" onerror="this.style.display='none'">
+        </div>
+        <div class="pinfo">
+          <div class="pn" id="lvlName">Sniper</div>
+          <div class="pr" id="lvlRole">Керри · Мидер</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="level-wrap">
+      <div class="level-visual reveal">
+        <h3>📊 Порядок прокачки по уровням</h3>
+        <div id="lvlList"></div>
+      </div>
+
+      <div class="level-tips reveal">
+        <h3>💡 Советы по прокачке</h3>
+        <div class="tip"><div class="tip-num">1</div><div><h5>Максимум одного умения</h5><p>Прокачивай одно умение до 4 уровня, потом переходи к следующему.</p></div></div>
+        <div class="tip"><div class="tip-num">2</div><div><h5>Ульт на 6, 12, 18</h5><p>Ультимейт качается строго на 6, 12 и 18 уровнях — он самый сильный.</p></div></div>
+        <div class="tip"><div class="tip-num">3</div><div><h5>Таланты на 10, 15, 20, 25</h5><p>Выбирай талант под ситуацию: против магии — резист, против физики — броню.</p></div></div>
+        <div class="tip"><div class="tip-num">4</div><div><h5>Статы вместо умения</h5><p>Иногда лучше +2 к характеристикам, чем слабое умение. Особенно на керри.</p></div></div>
+        <div class="tip"><div class="tip-num">5</div><div><h5>Смотри гайды по герою</h5><p>В клиенте Dota 2 встроены рекомендации для новичков — используй их.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="items">
+  <div class="cont">
+    <div class="sh reveal">
+      <div class="tag">ШАГ 5</div>
+      <h2>Что покупать: сборка под героя</h2>
+      <p>Выбери героя — и получишь персональную сборку с картинками предметов.</p>
+    </div>
+
+    <div class="build-hero reveal" id="buildHero" data-attr="agi">
+      <div class="bh-left">
+        <div class="bh-av" id="bhAv">
+          <span id="bhEmo">🏹</span>
+          <img id="bhImg" src="" alt="" onerror="this.style.display='none'">
+        </div>
+        <div class="bh-meta">
+          <div class="bh-name" id="bhName">Sniper</div>
+          <div class="bh-role" id="bhRole">Керри · Мидер</div>
+          <div class="bh-attr" id="bhAttr">ЛОВКОСТЬ</div>
+        </div>
+      </div>
+      <div class="bh-select-wrap">
+        <label>🎮 ВЫБЕРИ ГЕРОЯ</label>
+        <select id="buildHeroSelect"></select>
+      </div>
+    </div>
+
+    <div class="build-steps" id="buildSteps"></div>
+
+    <div class="build-note reveal">
+      <span class="ni">💡</span>
+      <div>Порядок покупки не жёсткий: <b>смотри на врагов</b>. Если у них много магии — бери BKB раньше, если много физики — Vanguard или Armlet. Сборка адаптируется к игре.</div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:var(--bg2);">
+  <div class="cont">
+    <div class="sh reveal">
+      <div class="tag">ОТВЕТЫ НА ГЛАВНОЕ</div>
+      <h2>Частые вопросы новичка</h2>
+      <p>Коротко о том, что чаще всего спрашивают перед первой игрой.</p>
+    </div>
+    <div class="faq reveal">
+      <div class="faq-item"><div class="faq-q">С какого героя лучше начать?<span class="faq-arrow">+</span></div><div class="faq-a">Для первого матча идеальны: <b>Wraith King</b>, <b>Sniper</b>, <b>Crystal Maiden</b> или <b>Lion</b>. У них простые умения и понятная роль.</div></div>
+      <div class="faq-item"><div class="faq-q">Что делать, если я умираю на линии?<span class="faq-arrow">+</span></div><div class="faq-a">Не паникуй. Стой подальше, добивай крипов, попроси помощи у союзников. Если давят сильно — уйди в лес или на другую линию.</div></div>
+      <div class="faq-item"><div class="faq-q">Сколько длится один матч?<span class="faq-arrow">+</span></div><div class="faq-a">Обычно 30–50 минут. Не начинай матч, если не можешь выделить хотя бы час.</div></div>
+      <div class="faq-item"><div class="faq-q">Что такое last hit и почему это важно?<span class="faq-arrow">+</span></div><div class="faq-a">Last hit — последний удар по крипу, который даёт золото. Без хорошего last hit ты не купишь предметы. Тренируй в режиме «Обучение».</div></div>
+      <div class="faq-item"><div class="faq-q">Как понять, какой предмет купить?<span class="faq-arrow">+</span></div><div class="faq-a">Много магии у врагов — <b>BKB</b> или <b>Pipe</b>; много физики — <b>Vanguard</b> или <b>Shiva's Guard</b>; враг убегает — <b>Blink Dagger</b> или <b>Force Staff</b>. Смотри вкладку «Что покупать» — там сборки под героев.</div></div>
+      <div class="faq-item"><div class="faq-q">Что делать, если союзники токсичны?<span class="faq-arrow">+</span></div><div class="faq-a">Молча играй свою игру. Используй «Mute» на токсичном игроке. Цель — научиться, а не переубедить кого-то.</div></div>
+      <div class="faq-item"><div class="faq-q">Что такое Рошан и Аегида?<span class="faq-arrow">+</span></div><div class="faq-a">Рошан — сильный нейтральный босс в центре карты. С него падает <b>Аегида</b> — воскрешает героя после смерти один раз.</div></div>
+      <div class="faq-item"><div class="faq-q">Как быстро я научусь играть?<span class="faq-arrow">+</span></div><div class="faq-a">Через 10–20 игр ты будешь понимать базу. Уверенная игра — после 100+ матчей.</div></div>
+      <div class="faq-item"><div class="faq-q">Стоит ли смотреть стримы и гайды?<span class="faq-arrow">+</span></div><div class="faq-a">Обязательно. Один хороший разбор даёт больше, чем 10 игр вслепую.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">DOTA<span>2</span> · ACADEMY</div>
+  <p>Учебный проект для новичков. Изображения героев и предметов загружаются с официального CDN Valve и используются в образовательных целях.</p>
+  <p>Практикуйся, смотри реплеи, играй с друзьями — и прогресс придёт быстрее, чем кажется.</p>
+  <div class="disc">Dota 2 — торговая марка Valve Corporation. Этот сайт не связан с Valve и создан в образовательных целях.</div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  const RAW = [
+    ['alchemist','Алхимик','Alchemist','str'],
+    ['axe','Акс','Axe','str'],
+    ['bristleback','Бристлбек','Bristleback','str'],
+    ['centaur','Кентавр','Centaur Warrunner','str'],
+    ['chaos_knight','Хаос Рыцарь','Chaos Knight','str'],
+    ['dawnbreaker','Донбрикер','Dawnbreaker','str'],
+    ['doom_bringer','Дум','Doom','str'],
+    ['dragon_knight','Дракон Рыцарь','Dragon Knight','str'],
+    ['earth_spirit','Дух Земли','Earth Spirit','str'],
+    ['earthshaker','Эршейкер','Earthshaker','str'],
+    ['elder_titan','Старший Титан','Elder Titan','str'],
+    ['huskar','Хускар','Huskar','str'],
+    ['kunkka','Кунка','Kunkka','str'],
+    ['legion_commander','Легионка','Legion Commander','str'],
+    ['life_stealer','Лайфстилер','Lifestealer','str'],
+    ['mars','Марс','Mars','str'],
+    ['night_stalker','Ночной Охотник','Night Stalker','str'],
+    ['ogre_magi','Огр Маг','Ogre Magi','str'],
+    ['omniknight','Омнинайт','Omniknight','str'],
+    ['primal_beast','Первозданный Зверь','Primal Beast','str'],
+    ['pudge','Пудж','Pudge','str'],
+    ['slardar','Слардар','Slardar','str'],
+    ['spirit_breaker','Спирит Брейкер','Spirit Breaker','str'],
+    ['sven','Свен','Sven','str'],
+    ['tidehunter','Тайдхантер','Tidehunter','str'],
+    ['shredder','Тимберсо','Timbersaw','str'],
+    ['tiny','Тайни','Tiny','str'],
+    ['treant','Трент','Treant Protector','str'],
+    ['tusk','Туск','Tusk','str'],
+    ['abyssal_underlord','Андерлорд','Underlord','str'],
+    ['undying','Андаинг','Undying','str'],
+    ['skeleton_king','Рейт Кинг','Wraith King','str'],
+    ['antimage','Антимаг','Anti-Mage','agi'],
+    ['arc_warden','Арк Варден','Arc Warden','agi'],
+    ['bloodseeker','Бладсикер','Bloodseeker','agi'],
+    ['bounty_hunter','Баунти Хантер','Bounty Hunter','agi'],
+    ['clinkz','Клинкз','Clinkz','agi'],
+    ['drow_ranger','Дроу Рейнджер','Drow Ranger','agi'],
+    ['ember_spirit','Дух Огня','Ember Spirit','agi'],
+    ['faceless_void','Фейслес Войд','Faceless Void','agi'],
+    ['gyrocopter','Гирокаптер','Gyrocopter','agi'],
+    ['hoodwink','Худвинк','Hoodwink','agi'],
+    ['juggernaut','Джаггернаут','Juggernaut','agi'],
+    ['luna','Луна','Luna','agi'],
+    ['medusa','Медуза','Medusa','agi'],
+    ['meepo','Мипо','Meepo','agi'],
+    ['monkey_king','Манки Кинг','Monkey King','agi'],
+    ['morphling','Морфлинг','Morphling','agi'],
+    ['naga_siren','Нага Сирена','Naga Siren','agi'],
+    ['phantom_assassin','Фантом Ассасин','Phantom Assassin','agi'],
+    ['phantom_lancer','Фантом Лансер','Phantom Lancer','agi'],
+    ['razor','Рейзор','Razor','agi'],
+    ['riki','Рики','Riki','agi'],
+    ['nevermore','Шэдоу Фиенд','Shadow Fiend','agi'],
+    ['slark','Сларк','Slark','agi'],
+    ['sniper','Снайпер','Sniper','agi'],
+    ['spectre','Спектра','Spectre','agi'],
+    ['templar_assassin','Темплар Ассасин','Templar Assassin','agi'],
+    ['terrorblade','Террорблейд','Terrorblade','agi'],
+    ['troll_warlord','Тролль Варлорд','Troll Warlord','agi'],
+    ['ursa','Урса','Ursa','agi'],
+    ['viper','Вайпер','Viper','agi'],
+    ['weaver','Вивер','Weaver','agi'],
+    ['ancient_apparition','Эншент Апаришн','Ancient Apparition','int'],
+    ['chen','Чен','Chen','int'],
+    ['crystal_maiden','Кристалка','Crystal Maiden','int'],
+    ['dazzle','Дазл','Dazzle','int'],
+    ['death_prophet','Дез Пропет','Death Prophet','int'],
+    ['disruptor','Дизраптор','Disruptor','int'],
+    ['enchantress','Энчантресс','Enchantress','int'],
+    ['grimstroke','Гримстроук','Grimstroke','int'],
+    ['invoker','Инвокер','Invoker','int'],
+    ['jakiro','Джакиро','Jakiro','int'],
+    ['keeper_of_the_light','Кипер Света','Keeper of the Light','int'],
+    ['leshrac','Лешрак','Leshrac','int'],
+    ['lich','Лич','Lich','int'],
+    ['lina','Лина','Lina','int'],
+    ['lion','Лион','Lion','int'],
+    ['muerta','Муэрта','Muerta','int'],
+    ['furion','Фурион',"Nature's Prophet",'int'],
+    ['necrolyte','Некрофос','Necrophos','int'],
+    ['oracle','Оракл','Oracle','int'],
+    ['obsidian_destroyer','Обсидиан','Outworld Destroyer','int'],
+    ['puck','Пак','Puck','int'],
+    ['pugna','Пугна','Pugna','int'],
+    ['queenofpain','Квопа','Queen of Pain','int'],
+    ['ringmaster','Рингмастер','Ringmaster','int'],
+    ['rubick','Рубик','Rubick','int'],
+    ['shadow_demon','Шэдоу Демон','Shadow Demon','int'],
+    ['shadow_shaman','Шаман','Shadow Shaman','int'],
+    ['silencer','Сайленсер','Silencer','int'],
+    ['skywrath_mage','Скайрат','Skywrath Mage','int'],
+    ['storm_spirit','Шторм Спирит','Storm Spirit','int'],
+    ['techies','Тикис','Techies','int'],
+    ['tinker','Тинкер','Tinker','int'],
+    ['warlock','Варлок','Warlock','int'],
+    ['witch_doctor','Вич Доктор','Witch Doctor','int'],
+    ['zuus','Зевс','Zeus','int'],
+    ['abaddon','Абаддон','Abaddon','uni'],
+    ['bane','Бейн','Bane','uni'],
+    ['batrider','Батрайдер','Batrider','uni'],
+    ['beastmaster','Бистмастер','Beastmaster','uni'],
+    ['brewmaster','Брюмастер','Brewmaster','uni'],
+    ['broodmother','Брудмазер','Broodmother','uni'],
+    ['rattletrap','Клокверк','Clockwerk','uni'],
+    ['dark_seer','Дарк Сир','Dark Seer','uni'],
+    ['dark_willow','Дарк Виллоу','Dark Willow','uni'],
+    ['enigma','Энигма','Enigma','uni'],
+    ['wisp','Ио','Io','uni'],
+    ['lone_druid','Лон Друид','Lone Druid','uni'],
+    ['lycan','Ликан','Lycan','uni'],
+    ['magnataur','Магнус','Magnus','uni'],
+    ['marci','Марси','Marci','uni'],
+    ['mirana','Мирана','Mirana','uni'],
+    ['nyx_assassin','Никс Ассасин','Nyx Assassin','uni'],
+    ['pangolier','Пангольер','Pangolier','uni'],
+    ['phoenix','Феникс','Phoenix','uni'],
+    ['sand_king','Сэнд Кинг','Sand King','uni'],
+    ['snapfire','Снэпфайр','Snapfire','uni'],
+    ['venomancer','Веномансер','Venomancer','uni'],
+    ['visage','Визаж','Visage','uni'],
+    ['void_spirit','Дух Пустоты','Void Spirit','uni'],
+    ['windrunner','Виндрейнджер','Windranger','uni'],
+    ['winter_wyvern','Винтер Виверн','Winter Wyvern','uni'],
+    ['vengefulspirit','Венга','Vengeful Spirit','uni']
+  ];
+
+  const HEROES = RAW.map(r => ({ internal:r[0], ru:r[1], en:r[2], attr:r[3] }));
+  const ATTR_EMOJI = { str:'💪', agi:'🏹', int:'🔮', uni:'🌀' };
+  const ATTR_LABEL = { str:'СИЛА', agi:'ЛОВКОСТЬ', int:'ИНТЕЛЛЕКТ', uni:'УНИВЕРСАЛ' };
+  const ATTR_SHORT = { str:'СИЛА', agi:'ЛОВК', int:'ИНТ', uni:'УНИВ' };
+  const HERO_CDN = 'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/';
+  const ITEM_CDN = 'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/items/';
+
+  /* ============ КАРТА ПРЕДМЕТОВ ============ */
+  const ITEM_IMG = {
+    'tango':'tango',
+    'healing salve':'flask',
+    'salve':'flask',
+    'clarity':'clarity',
+    'iron branch':'branches',
+    'branches':'branches',
+    'circlet':'circlet',
+    'slippers of agility':'slippers',
+    'slippers':'slippers',
+    'gauntlets of strength':'gauntlets',
+    'gauntlets':'gauntlets',
+    'mantle of intelligence':'mantle',
+    'mantle':'mantle',
+    'faerie fire':'faerie_fire',
+    'mango':'enchanted_mango',
+    'enchanted mango':'enchanted_mango',
+    'observer ward':'ward_observer',
+    'ward':'ward_observer',
+    'sentry ward':'ward_sentry',
+    'tp scroll':'tpscroll',
+    'tpscroll':'tpscroll',
+    'boots of speed':'boots',
+    'boots':'boots',
+    'power treads':'power_treads',
+    'treads':'power_treads',
+    'phase boots':'phase_boots',
+    'arcane boots':'arcane_boots',
+    'tranquil boots':'tranquil_boots',
+    'magic wand':'magic_wand',
+    'magic stick':'magic_stick',
+    'wraith band':'wraith_band',
+    'bracer':'bracer',
+    'null talisman':'null_talisman',
+    'bottle':'bottle',
+    'hand of midas':'hand_of_midas',
+    'midas':'hand_of_midas',
+    'quelling blade':'quelling_blade',
+    'stout shield':'stout_shield',
+    'vanguard':'vanguard',
+    'blink dagger':'blink',
+    'blink':'blink',
+    'black king bar':'black_king_bar',
+    'bkb':'black_king_bar',
+    'battle fury':'battle_fury',
+    'bf':'battle_fury',
+    'maelstrom':'maelstrom',
+    'mjollnir':'mjollnir',
+    'desolator':'desolator',
+    'daedalus':'daedalus',
+    'butterfly':'butterfly',
+    'satanic':'satanic',
+    'heart of tarrasque':'heart',
+    'heart':'heart',
+    'assault cuirass':'assault',
+    'assault':'assault',
+    "shiva's guard":'shivas_guard',
+    'shivas guard':'shivas_guard',
+    'shiva':'shivas_guard',
+    'pipe of insight':'pipe',
+    'pipe':'pipe',
+    'crimson guard':'crimson_guard',
+    'crimson':'crimson_guard',
+    'manta style':'manta',
+    'manta':'manta',
+    'diffusal blade':'diffusal_blade',
+    'diffusal':'diffusal_blade',
+    'sange & yasha':'sange_and_yasha',
+    'sange and yasha':'sange_and_yasha',
+    'sange & yasha — статы':'sange_and_yasha',
+    'sange':'sange',
+    'yasha':'yasha',
+    'kaya':'kaya',
+    'skadi':'skadi',
+    'abyssal blade':'abyssal_blade',
+    'abyssal':'abyssal_blade',
+    'basher':'skull_basher',
+    'skull basher':'skull_basher',
+    'monkey king bar':'monkey_king_bar',
+    'mkb':'monkey_king_bar',
+    'silver edge':'silver_edge',
+    'shadow blade':'shadow_blade',
+    'echo sabre':'echo_sabre',
+    'armlet of mordiggian':'armlet',
+    'armlet':'armlet',
+    'radiance':'radiance',
+    'refresher orb':'refresher',
+    'refresher':'refresher',
+    'octarine core':'octarine_core',
+    'octarine':'octarine_core',
+    "aghanim's scepter":'aghanims_scepter',
+    "aghanim's":'aghanims_scepter',
+    'aghanims scepter':'aghanims_scepter',
+    'aghanims':'aghanims_scepter',
+    'sheepstick':'sheepstick',
+    'scythe of vyse':'sheepstick',
+    "linken's sphere":'sphere',
+    "linken's":'sphere',
+    'linkens':'sphere',
+    'linken':'sphere',
+    "eul's scepter":'cyclone',
+    "eul's":'cyclone',
+    'euls':'cyclone',
+    'cyclone':'cyclone',
+    'force staff':'force_staff',
+    'force':'force_staff',
+    'hurricane pike':'hurricane_pike',
+    'glimmer cape':'glimmer_cape',
+    'glimmer':'glimmer_cape',
+    'aether lens':'aether_lens',
+    'aether':'aether_lens',
+    'bloodstone':'bloodstone',
+    'bloodthorn':'bloodthorn',
+    'orchid malevolence':'orchid',
+    'orchid':'orchid',
+    'solar crest':'solar_crest',
+    'urn of shadows':'urn_of_shadows',
+    'urn':'urn_of_shadows',
+    'spirit vessel':'spirit_vessel',
+    'lotus orb':'lotus_orb',
+    'lotus':'lotus_orb',
+    'dragon lance':'dragon_lance',
+    'blade mail':'blade_mail',
+    'blademail':'blade_mail',
+    'helm of the dominator':'helm_of_the_dominator',
+    'helm':'helm_of_the_dominator',
+    'mask of madness':'mask_of_madness',
+    'mom':'mask_of_madness',
+    'ethereal blade':'ethereal_blade',
+    'ethereal':'ethereal_blade',
+    'dagon':'dagon',
+    'veil of discord':'veil_of_discord',
+    'veil':'veil_of_discord',
+    'guardian greaves':'guardian_greaves',
+    'greaves':'guardian_greaves',
+    'boots of travel':'travel_boots',
+    'travel boots':'travel_boots',
+    'bot':'travel_boots',
+    'soul ring':'soul_ring',
+    'meteor hammer':'meteor_hammer',
+    'nullifier':'nullifier',
+    'divine rapier':'rapier',
+    'rapier':'rapier',
+    'wind waker':'wind_waker'
+  };
+
+  function getItemImage(name){
+    if (!name) return null;
+    let n = name.toLowerCase().trim();
+    if (n.includes(' / ')) n = n.split(' / ')[0].trim();
+    if (n.includes(' — ')) n = n.split(' — ')[0].trim();
+    if (n.includes(' - ')) n = n.split(' - ')[0].trim();
+    n = n.replace(/\s*×\s*\d+$/, '');
+    n = n.replace(/^(\d+)x\s+/, '');
+    if (ITEM_IMG[n]) return ITEM_IMG[n];
+    const noSpace = n.replace(/\s+/g, '_');
+    if (ITEM_IMG[noSpace]) return ITEM_IMG[noSpace];
+    for (const key in ITEM_IMG){
+      if (n === key || n.includes(key) || key.includes(n)) return ITEM_IMG[key];
+    }
+    return null;
+  }
+
+  /* ============ ГАЛЕРЕЯ ГЕРОЕВ ============ */
+  const grid = document.getElementById('heroesGrid');
+  const frag = document.createDocumentFragment();
+  HEROES.forEach(h => {
+    const tile = document.createElement('div');
+    tile.className = 'hero-tile';
+    tile.dataset.attr = h.attr;
+    tile.dataset.i = h.internal;
+    tile.dataset.ru = h.ru.toLowerCase();
+    tile.dataset.en = h.en.toLowerCase();
+    tile.innerHTML = `
+      <div class="tile-img">
+        <span class="tile-emo">${ATTR_EMOJI[h.attr]}</span>
+        <img src="${HERO_CDN}${h.internal}.png" alt="${h.en}" loading="lazy" onerror="this.remove()">
+        <span class="tile-attr">${ATTR_SHORT[h.attr]}</span>
+      </div>
+      <div class="tile-info">
+        <div class="tile-name">${h.ru}</div>
+        <div class="tile-en">${h.en}</div>
+      </div>`;
+    frag.appendChild(tile);
+  });
+  grid.appendChild(frag);
+
+  const tiles = document.querySelectorAll('.hero-tile');
+  let curFilter = 'all', curSearch = '';
+  function applyFilter(){
+    tiles.forEach(t => {
+      let show = true;
+      if (curFilter !== 'all') show = t.dataset.attr === curFilter;
+      if (show && curSearch) show = t.dataset.ru.includes(curSearch) || t.dataset.en.includes(curSearch);
+      t.classList.toggle('hide', !show);
+    });
+  }
+  document.querySelectorAll('.heroes-tabs .tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.heroes-tabs .tab').forEach(t => t.classList.remove('on'));
+      tab.classList.add('on');
+      curFilter = tab.dataset.f;
+      applyFilter();
+    });
+  });
+  document.getElementById('heroSearch').addEventListener('input', e => {
+    curSearch = e.target.value.trim().toLowerCase();
+    applyFilter();
+  });
+
+  /* ============ ПРОКАЧКА ============ */
+  function genericBuild(){ return ['q','e','q','e','q','r','q','e','e','talent','w','r','w','w','talent','w','s','r','s','talent','s','s','s','s','talent']; }
+  const SKILL_NAMES = {
+    q:'Q — Основное умение', w:'W — Второе умение', e:'E — Третье умение',
+    r:'R — Ультимейт', s:'+ — Статы (+2 к атрибутам)', talent:'★ — Талант'
+  };
+
+  const heroSelect = document.getElementById('heroSelect');
+  HEROES.forEach(h => {
+    const opt = document.createElement('option');
+    opt.value = h.internal;
+    opt.textContent = ATTR_EMOJI[h.attr] + ' ' + h.ru + ' (' + h.en + ')';
+    heroSelect.appendChild(opt);
+  });
+
+  const lvlList = document.getElementById('lvlList');
+  const lvlImg = document.getElementById('lvlImg');
+  const lvlEmo = document.getElementById('lvlEmo');
+  const lvlName = document.getElementById('lvlName');
+  const lvlRole = document.getElementById('lvlRole');
+  const lvlPreview = document.getElementById('lvlPreview');
+  const ROLE_BY_ATTR = {
+    str:'Сила · Ближний/Дальний бой',
+    agi:'Ловкость · Ближний/Дальний бой',
+    int:'Интеллект · Дальний бой',
+    uni:'Универсал · Гибкий герой'
+  };
+
+  function renderBuild(hero){
+    lvlPreview.dataset.attr = hero.attr;
+    lvlEmo.textContent = ATTR_EMOJI[hero.attr];
+    lvlImg.style.display = '';
+    lvlImg.src = HERO_CDN + hero.internal + '.png';
+    lvlName.textContent = hero.ru + ' / ' + hero.en;
+    lvlRole.textContent = ROLE_BY_ATTR[hero.attr];
+
+    const build = genericBuild();
+    lvlList.innerHTML = '';
+    build.forEach((key, i) => {
+      const lvl = i + 1;
+      const row = document.createElement('div');
+      row.className = 'lvl-row';
+      row.style.animationDelay = (i * 0.02) + 's';
+      let numCls = 'lvl-num';
+      if (key === 'r') numCls += ' ult';
+      else if (key === 'talent') numCls += ' talent';
+      else if (key === 's') numCls += ' stat';
+      let barCls = 'lvl-bar';
+      if (key === 'r') barCls += ' hl';
+      else if (key === 'talent') barCls += ' tl';
+      let kb = '?';
+      if (key === 'talent') kb = '★';
+      else if (key === 's') kb = '+';
+      else kb = key.toUpperCase();
+      row.innerHTML = `
+        <div class="${numCls}">${lvl}</div>
+        <div class="${barCls}">
+          <span class="kb">${kb}</span>
+          <span>${SKILL_NAMES[key]}</span>
+        </div>`;
+      lvlList.appendChild(row);
+    });
+  }
+
+  /* ============ СБОРКИ ПРЕДМЕТОВ ============ */
+  const ITEM_BUILDS = {
+    sniper: { role:'Керри · Мидер',
+      start:['Tango','Healing Salve','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Magic Wand','TP Scroll'],
+      core:['Dragon Lance','Maelstrom','Hurricane Pike'],
+      late:['Mjollnir','Satanic','Butterfly','Daedalus'],
+      sit:['Black King Bar','Monkey King Bar','Silver Edge'] },
+    drow_ranger: { role:'Керри · Позиция 1',
+      start:['Tango','Slippers of Agility ×2','Iron Branch','Circlet'],
+      early:['Wraith Band','Power Treads','Magic Wand'],
+      core:['Dragon Lance','Manta Style','Blink Dagger'],
+      late:['Butterfly','Satanic','Daedalus','Hurricane Pike'],
+      sit:['Black King Bar','Monkey King Bar'] },
+    juggernaut: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Phase Boots','Magic Wand'],
+      core:['Battle Fury','Manta Style','Diffusal Blade'],
+      late:['Abyssal Blade','Butterfly','Satanic'],
+      sit:['Black King Bar',"Aghanim's Scepter",'Skull Basher'] },
+    antimage: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Battle Fury'],
+      core:['Manta Style','Abyssal Blade','Skull Basher'],
+      late:['Butterfly','Heart of Tarrasque','Satanic'],
+      sit:['Black King Bar',"Linken's Sphere"] },
+    faceless_void: { role:'Керри · Офлейн',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Mask of Madness'],
+      core:['Maelstrom','Mjollnir','Black King Bar'],
+      late:['Satanic','Butterfly','Daedalus'],
+      sit:['Refresher Orb',"Aghanim's Scepter"] },
+    phantom_assassin: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Magic Wand'],
+      core:['Battle Fury','Desolator','Black King Bar'],
+      late:['Abyssal Blade','Satanic','Butterfly'],
+      sit:['Monkey King Bar','Skull Basher'] },
+    spectre: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Radiance'],
+      core:['Manta Style','Diffusal Blade','Black King Bar'],
+      late:['Butterfly','Heart of Tarrasque','Satanic'],
+      sit:['Skadi','Abyssal Blade'] },
+    medusa: { role:'Керри · Мидер',
+      start:['Tango','Slippers of Agility ×2','Circlet','Iron Branch'],
+      early:['Wraith Band','Power Treads','Magic Wand'],
+      core:['Manta Style','Skadi','Black King Bar'],
+      late:['Butterfly','Satanic','Bloodthorn'],
+      sit:["Linken's Sphere",'Divine Rapier'] },
+    slark: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Echo Sabre'],
+      core:['Shadow Blade','Silver Edge','Black King Bar'],
+      late:['Abyssal Blade','Skadi','Butterfly'],
+      sit:['Sange & Yasha','Skull Basher'] },
+    ursa: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Phase Boots','Blink Dagger'],
+      core:['Diffusal Blade','Black King Bar','Skull Basher'],
+      late:['Abyssal Blade','Satanic','Butterfly'],
+      sit:["Aghanim's Scepter",'Skadi'] },
+    troll_warlord: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Magic Wand'],
+      core:['Battle Fury','Black King Bar','Skull Basher'],
+      late:['Abyssal Blade','Satanic','Butterfly'],
+      sit:['Monkey King Bar','Skadi'] },
+    morphling: { role:'Керри · Мидер',
+      start:['Tango','Slippers of Agility ×2','Iron Branch','Circlet'],
+      early:['Wraith Band','Power Treads','Magic Wand'],
+      core:['Ethereal Blade','Manta Style','Black King Bar'],
+      late:['Satanic','Skadi','Butterfly'],
+      sit:["Aghanim's Scepter","Linken's Sphere"] },
+    luna: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Magic Wand'],
+      core:['Manta Style','Black King Bar','Dragon Lance'],
+      late:['Butterfly','Satanic','Daedalus'],
+      sit:["Aghanim's Scepter",'Skadi'] },
+    clinkz: { role:'Керри · Мидер',
+      start:['Tango','Slippers of Agility ×2','Iron Branch','Quelling Blade'],
+      early:['Wraith Band','Power Treads','Magic Wand'],
+      core:['Desolator','Black King Bar','Dragon Lance'],
+      late:['Hurricane Pike','Satanic','Bloodthorn'],
+      sit:['Monkey King Bar','Nullifier'] },
+    skeleton_king: { role:'Керри · Офлейн',
+      start:['Tango','Quelling Blade','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand'],
+      core:['Armlet of Mordiggian','Blink Dagger','Black King Bar'],
+      late:['Assault Cuirass','Heart of Tarrasque','Abyssal Blade'],
+      sit:['Blade Mail','Radiance'] },
+    chaos_knight: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand'],
+      core:['Armlet of Mordiggian','Echo Sabre','Black King Bar'],
+      late:['Heart of Tarrasque','Assault Cuirass','Satanic'],
+      sit:['Blade Mail',"Aghanim's Scepter"] },
+    life_stealer: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand'],
+      core:['Armlet of Mordiggian','Desolator','Black King Bar'],
+      late:['Assault Cuirass','Satanic','Abyssal Blade'],
+      sit:['Skull Basher','Sange & Yasha'] },
+    invoker: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Circlet'],
+      early:['Null Talisman','Boots of Speed','Magic Wand','Hand of Midas'],
+      core:["Aghanim's Scepter",'Blink Dagger','Black King Bar'],
+      late:['Octarine Core','Refresher Orb','Sheepstick'],
+      sit:["Eul's Scepter","Linken's Sphere"] },
+    lina: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Circlet'],
+      early:['Null Talisman','Boots of Speed','Magic Wand'],
+      core:['Aether Lens',"Aghanim's Scepter",'Black King Bar'],
+      late:['Octarine Core','Bloodstone','Sheepstick'],
+      sit:["Eul's Scepter",'Blink Dagger'] },
+    zuus: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Mango'],
+      early:['Null Talisman','Arcane Boots','Magic Wand'],
+      core:['Aether Lens',"Aghanim's Scepter",'Octarine Core'],
+      late:['Bloodstone','Refresher Orb','Sheepstick'],
+      sit:['Blink Dagger',"Eul's Scepter"] },
+    storm_spirit: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Circlet'],
+      early:['Null Talisman','Boots of Speed','Magic Wand','Bottle'],
+      core:['Bloodstone','Orchid Malevolence','Black King Bar'],
+      late:['Bloodthorn','Sheepstick',"Shiva's Guard"],
+      sit:["Linken's Sphere","Aghanim's Scepter"] },
+    queenofpain: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Circlet'],
+      early:['Null Talisman','Boots of Speed','Magic Wand'],
+      core:["Aghanim's Scepter",'Black King Bar','Aether Lens'],
+      late:['Octarine Core','Sheepstick',"Shiva's Guard"],
+      sit:['Blink Dagger','Refresher Orb'] },
+    puck: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Circlet'],
+      early:['Null Talisman','Boots of Speed','Magic Wand'],
+      core:['Blink Dagger',"Aghanim's Scepter",'Black King Bar'],
+      late:['Octarine Core','Sheepstick',"Shiva's Guard"],
+      sit:["Eul's Scepter","Linken's Sphere"] },
+    tinker: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Mango'],
+      early:['Null Talisman','Boots of Speed','Soul Ring'],
+      core:['Blink Dagger','Aether Lens','Black King Bar'],
+      late:['Sheepstick',"Shiva's Guard",'Octarine Core'],
+      sit:['Dagon',"Aghanim's Scepter"] },
+    shadow_shaman: { role:'Поддержка · Позиция 4/5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Blink Dagger','Aether Lens',"Aghanim's Scepter"],
+      late:['Octarine Core','Refresher Orb','Sheepstick'],
+      sit:['Force Staff','Glimmer Cape'] },
+    crystal_maiden: { role:'Поддержка · Позиция 5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows','Arcane Boots'],
+      core:['Blink Dagger',"Aghanim's Scepter",'Black King Bar'],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Force Staff','Glimmer Cape'] },
+    lion: { role:'Поддержка · Позиция 4/5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Blink Dagger','Aether Lens',"Aghanim's Scepter"],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Force Staff','Glimmer Cape'] },
+    lich: { role:'Поддержка · Позиция 5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:["Aghanim's Scepter",'Blink Dagger','Aether Lens'],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Force Staff','Glimmer Cape'] },
+    witch_doctor: { role:'Поддержка · Позиция 4/5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:["Aghanim's Scepter",'Blink Dagger','Aether Lens'],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Glimmer Cape','Force Staff'] },
+    warlock: { role:'Поддержка · Позиция 5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:["Aghanim's Scepter",'Refresher Orb','Aether Lens'],
+      late:['Octarine Core','Sheepstick',"Shiva's Guard"],
+      sit:['Glimmer Cape','Force Staff'] },
+    dazzle: { role:'Поддержка · Позиция 4/5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Aether Lens',"Aghanim's Scepter",'Glimmer Cape'],
+      late:['Octarine Core','Sheepstick','Guardian Greaves'],
+      sit:['Force Staff','Solar Crest'] },
+    shadow_demon: { role:'Поддержка · Позиция 4/5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Aether Lens','Blink Dagger',"Aghanim's Scepter"],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Force Staff','Glimmer Cape'] },
+    rubick: { role:'Поддержка · Позиция 4',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Blink Dagger','Aether Lens',"Aghanim's Scepter"],
+      late:['Octarine Core','Sheepstick','Black King Bar'],
+      sit:['Force Staff','Glimmer Cape'] },
+    jakiro: { role:'Поддержка · Позиция 5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Aether Lens',"Aghanim's Scepter",'Blink Dagger'],
+      late:['Octarine Core','Sheepstick',"Shiva's Guard"],
+      sit:['Glimmer Cape','Force Staff'] },
+    ancient_apparition: { role:'Поддержка · Позиция 4/5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Aether Lens',"Aghanim's Scepter",'Blink Dagger'],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Glimmer Cape','Force Staff'] },
+    axe: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Quelling Blade','Stout Shield','Gauntlets of Strength ×2'],
+      early:['Bracer','Phase Boots','Magic Wand','Vanguard'],
+      core:['Blink Dagger','Blade Mail','Black King Bar'],
+      late:['Heart of Tarrasque','Assault Cuirass',"Aghanim's Scepter"],
+      sit:['Crimson Guard',"Aghanim's Scepter"] },
+    tidehunter: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Arcane Boots','Magic Wand','Blink Dagger'],
+      core:['Refresher Orb','Black King Bar','Pipe of Insight'],
+      late:["Shiva's Guard",'Assault Cuirass','Heart of Tarrasque'],
+      sit:["Aghanim's Scepter",'Lotus Orb'] },
+    bristleback: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand','Vanguard'],
+      core:["Aghanim's Scepter",'Crimson Guard','Black King Bar'],
+      late:['Heart of Tarrasque','Assault Cuirass',"Shiva's Guard"],
+      sit:['Lotus Orb','Octarine Core'] },
+    centaur: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand','Vanguard'],
+      core:['Blink Dagger',"Aghanim's Scepter",'Black King Bar'],
+      late:['Heart of Tarrasque','Assault Cuirass','Crimson Guard'],
+      sit:['Pipe of Insight','Lotus Orb'] },
+    pudge: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Boots of Speed','Magic Wand','Blink Dagger'],
+      core:["Aghanim's Scepter",'Black King Bar','Blade Mail'],
+      late:['Heart of Tarrasque','Assault Cuirass',"Shiva's Guard"],
+      sit:['Aether Lens','Force Staff'] },
+    legion_commander: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Quelling Blade','Stout Shield','Gauntlets of Strength ×2'],
+      early:['Bracer','Phase Boots','Magic Wand','Blink Dagger'],
+      core:['Blade Mail','Black King Bar','Desolator'],
+      late:['Assault Cuirass','Heart of Tarrasque','Satanic'],
+      sit:["Aghanim's Scepter",'Silver Edge'] },
+    doom_bringer: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Quelling Blade','Stout Shield','Gauntlets of Strength ×2'],
+      early:['Bracer','Phase Boots','Magic Wand','Hand of Midas'],
+      core:['Blink Dagger','Black King Bar',"Shiva's Guard"],
+      late:['Refresher Orb',"Aghanim's Scepter",'Octarine Core'],
+      sit:["Aghanim's Scepter",'Refresher Orb'] },
+    mars: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand','Blink Dagger'],
+      core:['Black King Bar','Refresher Orb','Assault Cuirass'],
+      late:['Heart of Tarrasque',"Shiva's Guard","Aghanim's Scepter"],
+      sit:['Blink Dagger',"Aghanim's Scepter"] },
+    magnataur: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand','Blink Dagger'],
+      core:['Black King Bar','Refresher Orb','Assault Cuirass'],
+      late:['Heart of Tarrasque',"Shiva's Guard","Aghanim's Scepter"],
+      sit:['Blink Dagger','Refresher Orb'] },
+    sand_king: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Boots of Speed','Magic Wand','Blink Dagger'],
+      core:["Aghanim's Scepter",'Black King Bar',"Shiva's Guard"],
+      late:['Octarine Core','Refresher Orb','Heart of Tarrasque'],
+      sit:['Blink Dagger','Veil of Discord'] },
+    dark_seer: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Boots of Speed','Magic Wand','Soul Ring'],
+      core:['Blink Dagger','Black King Bar','Pipe of Insight'],
+      late:["Shiva's Guard","Aghanim's Scepter",'Refresher Orb'],
+      sit:["Aghanim's Scepter",'Lotus Orb'] },
+    enigma: { role:'Офлейнер · Позиция 4',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Soul Ring','Blink Dagger'],
+      core:['Black King Bar','Refresher Orb',"Aghanim's Scepter"],
+      late:['Octarine Core',"Shiva's Guard",'Sheepstick'],
+      sit:['Blink Dagger','Refresher Orb'] },
+    beastmaster: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Boots of Speed','Magic Wand','Helm of the Dominator'],
+      core:["Aghanim's Scepter",'Blink Dagger','Black King Bar'],
+      late:['Assault Cuirass','Heart of Tarrasque','Refresher Orb'],
+      sit:["Aghanim's Scepter",'Octarine Core'] },
+    brewmaster: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Boots of Speed','Magic Wand','Blink Dagger'],
+      core:['Black King Bar',"Aghanim's Scepter",'Assault Cuirass'],
+      late:['Refresher Orb','Heart of Tarrasque',"Shiva's Guard"],
+      sit:['Blink Dagger','Refresher Orb'] },
+    pangolier: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand','Blink Dagger'],
+      core:['Black King Bar',"Aghanim's Scepter",'Diffusal Blade'],
+      late:['Abyssal Blade','Heart of Tarrasque','Skadi'],
+      sit:['Blink Dagger','Diffusal Blade'] },
+    monkey_king: { role:'Керри · Офлейн',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Magic Wand','Echo Sabre'],
+      core:['Diffusal Blade','Black King Bar',"Aghanim's Scepter"],
+      late:['Abyssal Blade','Satanic','Butterfly'],
+      sit:['Echo Sabre','Diffusal Blade'] },
+    nyx_assassin: { role:'Поддержка · Позиция 4',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Blink Dagger',"Aghanim's Scepter",'Aether Lens'],
+      late:['Octarine Core','Sheepstick','Black King Bar'],
+      sit:['Force Staff','Glimmer Cape'] },
+    mirana: { role:'Поддержка · Позиция 4',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:["Aghanim's Scepter",'Aether Lens','Blink Dagger'],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Force Staff','Glimmer Cape'] },
+    marci: { role:'Поддержка · Позиция 4',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:['Blink Dagger','Black King Bar',"Aghanim's Scepter"],
+      late:['Heart of Tarrasque','Assault Cuirass','Abyssal Blade'],
+      sit:['Blink Dagger',"Aghanim's Scepter"] },
+    _default_carry_agi: { role:'Керри · Позиция 1',
+      start:['Tango','Quelling Blade','Slippers of Agility ×2','Iron Branch'],
+      early:['Wraith Band','Power Treads','Magic Wand','TP Scroll'],
+      core:['Battle Fury','Black King Bar','Manta Style'],
+      late:['Butterfly','Daedalus','Abyssal Blade'],
+      sit:['Monkey King Bar',"Linken's Sphere"] },
+    _default_mid_int: { role:'Мидер · Позиция 2',
+      start:['Tango','Faerie Fire','Iron Branch ×3','Circlet'],
+      early:['Null Talisman','Boots of Speed','Magic Wand','Bottle'],
+      core:["Aghanim's Scepter",'Blink Dagger','Black King Bar'],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:["Eul's Scepter","Linken's Sphere"] },
+    _default_supp_int: { role:'Поддержка · Позиция 5',
+      start:['Tango','Faerie Fire','Iron Branch ×2','Mango','Observer Ward'],
+      early:['Boots of Speed','Magic Wand','Urn of Shadows'],
+      core:["Aghanim's Scepter",'Blink Dagger','Aether Lens'],
+      late:['Octarine Core','Sheepstick','Refresher Orb'],
+      sit:['Force Staff','Glimmer Cape'] },
+    _default_off_str: { role:'Офлейнер · Позиция 3',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Phase Boots','Magic Wand','Vanguard'],
+      core:['Blink Dagger','Black King Bar','Pipe of Insight'],
+      late:['Heart of Tarrasque','Assault Cuirass',"Shiva's Guard"],
+      sit:['Crimson Guard',"Aghanim's Scepter"] },
+    _default_off_uni: { role:'Офлейнер / Поддержка',
+      start:['Tango','Stout Shield','Gauntlets of Strength ×2','Iron Branch'],
+      early:['Bracer','Boots of Speed','Magic Wand'],
+      core:['Blink Dagger','Black King Bar',"Aghanim's Scepter"],
+      late:['Octarine Core','Refresher Orb',"Shiva's Guard"],
+      sit:['Force Staff','Glimmer Cape'] }
+  };
+
+  function getBuildForHero(hero){
+    if (ITEM_BUILDS[hero.internal]) return ITEM_BUILDS[hero.internal];
+    if (hero.attr === 'str') return ITEM_BUILDS._default_off_str;
+    if (hero.attr === 'agi') return ITEM_BUILDS._default_carry_agi;
+    if (hero.attr === 'int') return ITEM_BUILDS._default_mid_int;
+    return ITEM_BUILDS._default_off_uni;
+  }
+
+  /* ============ РЕНДЕР СБОРОК ============ */
+  const buildHero = document.getElementById('buildHero');
+  const bhImg = document.getElementById('bhImg');
+  const bhEmo = document.getElementById('bhEmo');
+  const bhName = document.getElementById('bhName');
+  const bhRole = document.getElementById('bhRole');
+  const bhAttr = document.getElementById('bhAttr');
+  const buildSteps = document.getElementById('buildSteps');
+  const buildHeroSelect = document.getElementById('buildHeroSelect');
+
+  HEROES.forEach(h => {
+    const opt = document.createElement('option');
+    opt.value = h.internal;
+    opt.textContent = ATTR_EMOJI[h.attr] + ' ' + h.ru + ' (' + h.en + ')';
+    buildHeroSelect.appendChild(opt);
+  });
+
+  const STEP_META = {
+    start:{ title:'Старт', sub:'0–5 МИН', icon:'🎒' },
+    early:{ title:'Ранняя игра', sub:'5–15 МИН', icon:'⚔️' },
+    core:{  title:'Ядро', sub:'15–30 МИН', icon:'⚡' },
+    late:{  title:'Лейт-гейм', sub:'30+ МИН', icon:'🏆' },
+    sit:{   title:'Ситуативно', sub:'ПО СИТУАЦИИ', icon:'🛠️' }
+  };
+
+  function renderItems(hero){
+    const build = getBuildForHero(hero);
+
+    buildHero.dataset.attr = hero.attr;
+    bhEmo.textContent = ATTR_EMOJI[hero.attr];
+    bhImg.style.display = '';
+    bhImg.src = HERO_CDN + hero.internal + '.png';
+    bhName.textContent = hero.ru + ' / ' + hero.en;
+    bhRole.textContent = build.role;
+    bhAttr.textContent = ATTR_LABEL[hero.attr];
+
+    buildSteps.innerHTML = '';
+    ['start','early','core','late','sit'].forEach((key, idx) => {
+      const items = build[key] || [];
+      const step = document.createElement('div');
+      step.className = 'bstep';
+      step.dataset.c = key;
+      step.style.opacity = 0;
+      step.style.transform = 'translateY(14px)';
+      step.style.transition = 'all .35s';
+      step.style.transitionDelay = (idx * 0.05) + 's';
+
+      const meta = STEP_META[key];
+      let listHtml = '';
+      items.forEach(it => {
+        const imgName = getItemImage(it);
+        const imgHtml = imgName
+          ? `<img src="${ITEM_CDN}${imgName}.png" alt="${it}" loading="lazy" onerror="this.style.visibility='hidden'">`
+          : `<img src="" alt="" style="visibility:hidden">`;
+        listHtml += `<div class="bstep-item">${imgHtml}<span class="it-name">${it}</span></div>`;
+      });
+
+      step.innerHTML = `
+        <div class="bstep-head">
+          <div class="bstep-ico">${meta.icon}</div>
+          <div>
+            <div class="bstep-title">${meta.title}</div>
+            <div class="bstep-sub">${meta.sub}</div>
+          </div>
+        </div>
+        <div class="bstep-list">${listHtml}</div>`;
+
+      buildSteps.appendChild(step);
+
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          step.style.opacity = 1;
+          step.style.transform = 'translateY(0)';
+        }, 20);
+      });
+    });
+  }
+
+  /* ============ СИНХРОНИЗАЦИЯ ============ */
+  function selectHero(internal){
+    const hero = HEROES.find(h => h.internal === internal);
+    if (!hero) return;
+    heroSelect.value = internal;
+    renderBuild(hero);
+    buildHeroSelect.value = internal;
+    renderItems(hero);
+  }
+
+  heroSelect.addEventListener('change', () => selectHero(heroSelect.value));
+  buildHeroSelect.addEventListener('change', () => selectHero(buildHeroSelect.value));
+
+  grid.addEventListener('click', e => {
+    const tile = e.target.closest('.hero-tile');
+    if (!tile) return;
+    selectHero(tile.dataset.i);
+    document.getElementById('leveling').scrollIntoView({behavior:'smooth'});
+  });
+
+  /* ============ СТАРТОВАЯ ОТРИСОВКА ============ */
+  const startHero = HEROES.find(h => h.internal === 'sniper') || HEROES[0];
+  renderBuild(startHero);
+  heroSelect.value = startHero.internal;
+  renderItems(startHero);
+  buildHeroSelect.value = startHero.internal;
+
+  /* ============ МЕНЮ, СКРОЛЛ, FAQ ============ */
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => navLinks.classList.remove('open'))
+  );
+
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navAnchors = document.querySelectorAll('.nav-links a');
+  function updateActiveNav(){
+    let current = '';
+    const y = window.scrollY + 140;
+    sections.forEach(s => { if (s.offsetTop <= y) current = s.id; });
+    navAnchors.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav, {passive:true});
+
+  const topBtn = document.getElementById('top');
+  window.addEventListener('scroll', () => {
+    topBtn.classList.toggle('on', window.scrollY > 500);
+  }, {passive:true});
+
+  const counters = document.querySelectorAll('.hs .n');
+  let countersDone = false;
+  function runCounters(){
+    if (countersDone) return;
+    const heroTop = document.getElementById('hero').offsetTop;
+    if (window.scrollY > heroTop - 100) return;
+    countersDone = true;
+    counters.forEach(el => {
+      const target = parseInt(el.dataset.count, 10) || 0;
+      let v = 0;
+      const step = Math.max(1, Math.round(target / 34));
+      const t = setInterval(() => {
+        v += step;
+        if (v >= target) { v = target; clearInterval(t); }
+        el.textContent = v;
+      }, 28);
+    });
+  }
+  window.addEventListener('scroll', runCounters, {passive:true});
+  setTimeout(runCounters, 400);
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    q.addEventListener('click', () => item.classList.toggle('open'));
+  });
+
+  updateActiveNav();
+})();
+</script>
+</body>
+</html>
